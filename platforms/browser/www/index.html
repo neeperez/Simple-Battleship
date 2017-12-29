@@ -1,0 +1,73 @@
+
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' https://luca-ucsc-teaching-backend.appspot.com 'unsafe-inline'; script-src 'self' https://luca-ucsc-teaching-backend.appspot.com 'unsafe-inline' 'unsafe-eval';">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="css/myapp.css" rel="stylesheet" type="text/css" />
+        <link href="css/stupid.css" rel="stylesheet" type="text/css"/>
+        <link href="font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <title>BattleShip</title>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/vue.js"></script>
+        <script type="text/javascript" src="js/randomString.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </head>
+    <body>
+
+    <div id="vue-div" class="app">
+
+        <div class="top_input">
+            <input v-model="magic_word" placeholder="shared magic word" />
+            <button v-on:click="set_magic_word">Play</button>
+            <button id="ngb" v-on:click="newGame">New Game</button>
+            <i v-if="need_new_magic_word" class="fa fa-warning"><ins v-if="intruding"> A game with that magic word is active, enter a new one</ins></i>
+            <p>Welcome to <b> B a t t l e s h i p s</b>! <ins v-if="are_both_present">Both players are present.</ins><ins v-if="waiting">Waiting for both players to join</ins></p>
+            <p>Turn indicator: <ins v-if="is_my_turn">Your turn!</ins> <ins v-if="won">YOU WIN!</ins> <ins v-if="lost">YOU LOST!</ins></p>
+        </div> 
+        
+        <div class = "container center opp">
+            <h2>Opponent</h2>
+        </div>
+        
+        <div class="board container">
+            <table>
+                <tr v-for="i in [0, 1, 2, 3, 4, 5, 6, 7]">
+                    <td v-for="j in [0, 1, 2, 3, 4, 5, 6, 7]" v-on:click="shoot(i,j)" 
+                        v-bind:class="{white: [0, 1, 2, 3].indexOf(shoot_board[8*i + j]) != -1, blue: [4].indexOf(shoot_board[8*i + j]) != -1, red: [-1, -2, -3, -4, -5, -6].indexOf(shoot_board[8*i + j]) != -1}">
+                    </td>
+                </tr>
+            </table>
+        
+        </div>
+        <div class="container center your">
+            <h2>Your Ships</h2>
+        </div>
+        
+        <div class="board container">
+            <table>
+                <tr v-for="i in [0, 1, 2, 3, 4, 5, 6, 7]">
+                    <td v-for="j in [0, 1, 2, 3, 4, 5, 6, 7]" 
+                        v-bind:class="{white: [0].indexOf(my_board[8*i + j]) != -1, red:[-1, -2, -3, -4, -5, -6].indexOf(my_board[8*i + j]) != -1, green: [1, 2, 3].indexOf(my_board[8*i + j]) != -1, blue: [4].indexOf(my_board[8*i + j]) != -1}">
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    </body>
+</html>
